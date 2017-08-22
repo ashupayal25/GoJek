@@ -1,4 +1,4 @@
-package com.gojek.parkinglot;
+package com.gojek.parkinglot.processor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,26 +12,33 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
-
+import com.gojek.parkinglot.model.Car;
 
 /**
- * Created by Ashish Payal on 22/08/17.
+ * @author Ashish_Payal
+ *
  */
-class ParkingLot {
-	private ParkingLot instance;
+public class ParkingLot {
 	
-	private Car[] parkingSlots;
-	private Queue<Integer> ticketingMachine;
+	private static Car[] parkingSlots;
+	private static Queue<Integer> ticketingMachine;
 	
-	ParkingLot(final int size) {
+	/**
+	 * @param size
+	 */
+	public ParkingLot(final int size) {
 		this.parkingSlots = new Car[size];
 		this.ticketingMachine = new PriorityQueue<Integer>();
 		for (int i=1; i<= size; i++) {
             ticketingMachine.offer(i);
         }
 	}
-	
-	Optional<Integer> park(Car car) {
+
+	/**
+	 * @param car
+	 * @return Integer - slot number where the car has been parked
+	 */
+	public Optional<Integer> park(Car car) {
 		if(car==null)
 			return Optional.empty();
 		if(!ticketingMachine.isEmpty()){
@@ -43,7 +50,11 @@ class ParkingLot {
 		return Optional.empty();
 	}
 	
-	Optional<Car> leave(int slotNumber) {
+	/**
+	 * @param slotNumber
+	 * @return Car object 
+	 */
+	public Optional<Car> leave(int slotNumber) {
 		if(parkingSlots[slotNumber-1]!=null){
 			Car car = parkingSlots[slotNumber-1];
 			parkingSlots[slotNumber-1] = null;
@@ -53,7 +64,10 @@ class ParkingLot {
 		return Optional.empty();
 	}
 	
-	Map<Integer, Car> status() {
+	/**
+	 * @return Return the Map<Integer,Car> where Integer is the slot number and car which is parked on the slot
+	 */
+	public Map<Integer, Car> getStatus() {
 		Map<Integer,Car> statusMap = new HashMap<Integer, Car>();
 		for (int i = 0; i < parkingSlots.length; i++) {
 			if(parkingSlots[i]!=null){
@@ -63,33 +77,45 @@ class ParkingLot {
 		return statusMap;
 	}
 	
-	List<Car> getCarsByColor(String color) {
+	/**
+	 * @param color
+	 * @return the list of Cars currently in parking with given color
+	 */
+	public List<Car> getCarsByColor(String color) {
 		return Arrays.stream(parkingSlots).parallel()
 			.filter(car -> car != null  && StringUtils.equalsIgnoreCase(car.getColor(), color))
 			.collect(Collectors.toList());
 	}
 	
-	List<Integer> getSlotsByColor(String color) {
+	/**
+	 * @param color
+	 * @return the List<Integer> i.e., the list of slots with given vehicle color 
+	 */
+	public List<Integer> getSlotsByColor(String color) {
 		List<Integer> carList= new ArrayList<Integer>();
 		for (int i = 0; i < parkingSlots.length; i++) {
 			if(parkingSlots[i]!=null){
 				Car car = parkingSlots[i];
 				if(car.getColor().equalsIgnoreCase(color)){
-					carList.add(i);
+					carList.add(i+1);
 				}
 			}
 		}
 		return carList;
 	}
 	
-	List<Integer> getSlotsByRegNo(String regNumber) {
+	/**
+	 * @param regNumber
+	 * @return List<integer i.e., the list of slos with given registration Number
+	 */
+	public List<Integer> getSlotsByRegNo(String regNumber) {
 		List<Integer> carList= new ArrayList<Integer>();
 		for (int i = 0; i < parkingSlots.length; i++) {
 			if(parkingSlots[i]!=null){
 				
 				Car car = parkingSlots[i];
 				if(car.getRegistrationNumber().equalsIgnoreCase(regNumber)){
-					carList.add(i);
+					carList.add(i+1);
 				}
 			}
 		}

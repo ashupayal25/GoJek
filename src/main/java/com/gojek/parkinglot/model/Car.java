@@ -1,13 +1,18 @@
-package com.gojek.parkinglot;
+package com.gojek.parkinglot.model;
 
 /**
- * Created by Ashish Payal on 22/08/17.
+ * @author Ashish_Payal
+ *
  */
-class Car {
+public class Car {
 	private String registrationNumber;
 	private String color;
 	
-	Car(final String registrationNumber, final String color) {
+	/**
+	 * @param registrationNumber
+	 * @param color
+	 */
+	public Car(final String registrationNumber, final String color) {
 		this.registrationNumber = registrationNumber;
 		this.color = color;
 	}

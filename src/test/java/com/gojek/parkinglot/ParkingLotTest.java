@@ -5,10 +5,12 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import com.gojek.parkinglot.model.Car;
+import com.gojek.parkinglot.processor.ParkingLot;
 
 /**
  * Created by Ashish Payal on 22/08/17.
@@ -57,6 +59,7 @@ public class ParkingLotTest {
 		car = instance.leave(1);
 		Assert.assertFalse(car.isPresent());
  	}
+	
 	@Test(dataProvider="parkDP")
 	public void testStatus(final String regNumber, final String color){
 		
@@ -65,16 +68,17 @@ public class ParkingLotTest {
 			Assert.assertTrue(slot.isPresent());
 		}
 		
-		Map<Integer, Car> carList = instance.status();	
+		Map<Integer, Car> carList = instance.getStatus();	
 		Assert.assertEquals(carList.size(), SIZE-1);
 	
 		instance.park(new Car(regNumber,color));
 		instance.park(new Car(regNumber,color));
 		
-		carList = instance.status();	
+		carList = instance.getStatus();	
 		Assert.assertEquals(carList.size(), SIZE);
 		
 	}
+	
 	@Test(dataProvider="parkDP")
 	public void testGetCarsByColor(final String regNumber, final String color){
 		
@@ -86,6 +90,7 @@ public class ParkingLotTest {
 		car = instance.getCarsByColor("White");
 		Assert.assertEquals(car.size(), 1);
 	}
+	
 	@Test(dataProvider="parkDP")
 	public void testGetSlotsByColor(final String regNumber, final String color){
 		
@@ -98,6 +103,7 @@ public class ParkingLotTest {
 		Assert.assertEquals(slots.size(), 1);
 		
 	}
+	
 	@Test(dataProvider="parkDP")
 	public void testGetSlotsByRegNo(final String regNumber, final String color){
 		List<Integer> slots = instance.getSlotsByRegNo("KA-01-HH-1234");
