@@ -25,8 +25,7 @@ public class CommandLineInterface {
         case 0:
             System.out.println("Please enter 'quit' to quit");
             System.out.println("Input: ");
-            // Interactive command-line input/output
-            // Run an infinite loop
+            // Interactive: command-line input/output
             while(true) {
                 try {
                     BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));

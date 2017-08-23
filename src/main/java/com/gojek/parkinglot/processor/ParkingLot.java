@@ -5,10 +5,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -92,16 +94,11 @@ public class ParkingLot {
 	 * @return the List<Integer> i.e., the list of slots with given vehicle color 
 	 */
 	public List<Integer> getSlotsByColor(String color) {
-		List<Integer> carList= new ArrayList<Integer>();
-		for (int i = 0; i < parkingSlots.length; i++) {
-			if(parkingSlots[i]!=null){
-				Car car = parkingSlots[i];
-				if(car.getColor().equalsIgnoreCase(color)){
-					carList.add(i+1);
-				}
-			}
-		}
-		return carList;
+		return IntStream.range(0, parkingSlots.length).parallel()
+				.filter(slotNo -> parkingSlots[slotNo] != null && StringUtils.equalsIgnoreCase(parkingSlots[slotNo].getColor(), color))
+				.mapToObj(Integer::new)
+				.collect(Collectors.toList());
+		
 	}
 	
 	/**
@@ -109,16 +106,9 @@ public class ParkingLot {
 	 * @return List<integer i.e., the list of slos with given registration Number
 	 */
 	public List<Integer> getSlotsByRegNo(String regNumber) {
-		List<Integer> carList= new ArrayList<Integer>();
-		for (int i = 0; i < parkingSlots.length; i++) {
-			if(parkingSlots[i]!=null){
-				
-				Car car = parkingSlots[i];
-				if(car.getRegistrationNumber().equalsIgnoreCase(regNumber)){
-					carList.add(i+1);
-				}
-			}
+		return IntStream.range(0, parkingSlots.length).parallel()
+			.filter(slotNo -> parkingSlots[slotNo] != null && StringUtils.equalsIgnoreCase(parkingSlots[slotNo].getRegistrationNumber(), regNumber))
+			.mapToObj(Integer::new)
+			.collect(Collectors.toList());
 		}
-		return carList;
-	}
 }

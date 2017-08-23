@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -19,15 +20,13 @@ public class CommandParser {
 	 */
 	public List<String> parseFileInput(String fileName) {
 		
-	  List<String> commands = new ArrayList<String>();
-	  Path path = Paths.get(fileName);
-      try {
-    	  commands = Files.readAllLines(path);
+	     try {
+    	  return Files.readAllLines(Paths.get(fileName));
     	 
 		} catch (IOException e) {
 			e.printStackTrace();
+			return Collections.emptyList();
 		}
-      return commands;
 	}
 
 }
